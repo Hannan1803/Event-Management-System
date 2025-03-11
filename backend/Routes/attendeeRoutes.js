@@ -1,4 +1,5 @@
 import express from "express";
+import {authenticateToken} from "../Middleware/auth.js";
 import {
   registerAttendees,
   fetchAllAttendees,
@@ -12,13 +13,13 @@ const router = express.Router();
 router.post("/register", registerAttendees);
 
 // ✅ Get All Attendees (No Event ID Required)
-router.get("/attendees", fetchAllAttendees);
+router.get("/attendees",authenticateToken ,fetchAllAttendees);
 
 // ✅ Delete an Attendee
-router.delete("/:attendee_id", removeAttendee);
+router.delete("/:attendee_id",authenticateToken , removeAttendee);
 
 //Fetch events by userId
-router.get("/:user_id", fetchEventsByUserId);
+router.get("/:user_id",authenticateToken , fetchEventsByUserId);
 
 export default router;
 

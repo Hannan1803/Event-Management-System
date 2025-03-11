@@ -11,15 +11,12 @@ import attendeeRoutes from "./Routes/attendeeRoutes.js";
 dotenv.config();
 
 const app = express();
+app.use(express.json());
+
 const port = process.env.PORT || 5000;
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
-app.use(express.json());
 
-
-// app.use("/api/attendees", attendeeRoutes);
-// Middleware
-app.use(cors());
 app.use(cors({
   origin: "http://localhost:5173",  // Allow requests from your frontend
   methods: "GET,POST,PUT,DELETE",
@@ -38,7 +35,7 @@ app.use("/events", eventRoutes);
 app.use("/attendee", attendeeRoutes);
 // app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
+
 app.use("/api/attendees", attendeeRoutes);
 app.get("/api/attendees", async (req, res) => {
   try {

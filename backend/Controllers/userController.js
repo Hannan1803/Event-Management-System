@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { supabase } from '../supabaseClient.js'; 
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { generateAccessToken } from "../Middleware/auth.js";
 import { log } from "console";
 // import { JWT_EXPIRES_IN, JWT_SECRET } from "../.env";
 dotenv.config();
@@ -104,11 +105,19 @@ export const loginUser = async (req, res) => {
     }
 
     // Generate JWT token
-    const token = jwt.sign(
-      { userId: user.id },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN } // Expiration time for the token
-    );
+    // const token = jwt.sign(
+    //   { userId: user.id },
+    //   process.env.JWT_SECRET,
+    //   { expiresIn: process.env.JWT_EXPIRES_IN } // Expiration time for the token
+    // );
+    //console.log("token - ", token);
+    const token = jwt.sign(user, process.env.JWT_SECRET , {expiresIn: '15m'})
+    console.log("token - ", token);
+    
+    const refreshtoken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+    console.log("refresh token - " , refreshtoken);
+    console.log("access token - " , token);
+    
 
     res.status(200).json({
       success: true,
