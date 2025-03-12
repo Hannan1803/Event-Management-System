@@ -6,13 +6,17 @@ const OrganizerDashboard = () => {
   const [genreCounts, setGenreCounts] = useState({});
   const [popularGenre, setPopularGenre] = useState("");
   const [recentEvents, setRecentEvents] = useState([]);
+  const token = localStorage.getItem("token");
  
   // Fetch Event Data from Backend
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-const response = await axios.get("http://localhost:3000/api/events");
- 
+        const response = await axios.get("http://localhost:3000/api/events" , {
+          headers: {
+              "Authorization": `Bearer ${token}`
+          }
+      });
         if (response.status === 200) {
           const events = response.data.data;
           console.log("Fetched Events:", events);

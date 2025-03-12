@@ -98,13 +98,15 @@ export const deleteEvent = async (req, res) => {
  
   try {
     let query = supabase.from('event_details').select('*');
- 
+    console.log("Came inside : " , query);
+    
     // If a category is provided, filter by category
     if (category && category !== 'All') {
       query = query.eq('genre_name', category);
     }
  
     const { data, error } = await query;
+    
  
     if (error) {
       console.error('Database error:', error.message); // Log detailed error

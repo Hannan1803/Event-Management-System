@@ -192,14 +192,22 @@ const EventDetails = () => {
     const fetchEventDetails = async () => {
       try {
         const eventResponse = await axios.get(
-          `http://localhost:3000/events/event_details/${id}`
+          `http://localhost:3000/events/event_details/${id}` , {
+            headers:{
+              "Authorization" : `Bearer ${localStorage.getItem("token")}`
+            }
+          }
         );
         if (eventResponse.data) {
           setEvent(eventResponse.data);
         }
 
         const reviewsResponse = await axios.get(
-          `http://localhost:3000/events/event_details/${id}/reviews`
+          `http://localhost:3000/events/event_details/${id}/reviews` ,{
+            headers:{
+              "Authorization" : `Bearer ${localStorage.getItem("token")}`
+            }
+          }
         );
         if (reviewsResponse.data) {
           setReviews(reviewsResponse.data);
@@ -231,6 +239,11 @@ const EventDetails = () => {
             user_id: JSON.parse(uId).id,
             comment: newReview,
             rating: rating,
+          },
+          {
+            headers: {
+              "Authorization": `Bearer ${localStorage.getItem("token")}`,
+            }
           }
         );
 

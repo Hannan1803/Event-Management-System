@@ -6,14 +6,15 @@ import {
     updatePayment,
     deletePayment
 } from "../Controllers/paymentController.js";
+import { authenticateToken } from "../Middleware/auth.js";
  
 const router = express.Router();
  
-router.post("/", createPayment);
-router.get("/", getAllPayments);
-router.get("/:id", getPaymentById);
-router.put("/:id", updatePayment);
-router.delete("/:id", deletePayment);
+router.post("/", authenticateToken ,createPayment);
+router.get("/", authenticateToken ,getAllPayments);
+router.get("/:id",authenticateToken , getPaymentById);
+router.put("/:id",authenticateToken , updatePayment);
+router.delete("/:id",authenticateToken , deletePayment);
 
  
 export default router;

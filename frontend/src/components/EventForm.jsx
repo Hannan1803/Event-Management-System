@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 const EventForm = () => {
     const navigate = useNavigate();
+    const token = localStorage.getItem("token");
 
     const orgId = localStorage.getItem("user");
-    console.log();
     
     const genres = [
         { name: "Music Concert" },
@@ -48,7 +48,11 @@ const EventForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/api/events', eventDetails);
+            const response = await axios.post('http://localhost:3000/api/events', eventDetails , {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
             alert("Event added successfully!");
             navigate('/events')
             console.log("Response data:", response.data);

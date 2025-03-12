@@ -10,7 +10,9 @@ const LandingPageForOrganizer = () => {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [currentEvent, setCurrentEvent] = useState(null);
-
+  const token = localStorage.getItem("token");
+  
+  
   // Fetch events when component mounts
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -21,7 +23,11 @@ const LandingPageForOrganizer = () => {
 
     const fetchEvents = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/events/${user.id}`);
+        const response = await axios.get(`http://localhost:3000/events/${user.id}` , {
+          headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
         console.log("Fetched events:", response.data);
         setEvents(response.data);
         setFilteredEvents(response.data);
@@ -67,7 +73,11 @@ const LandingPageForOrganizer = () => {
     console.log(`Attempting to delete event with ID: ${eventId}`);
 
     try {
-      await axios.delete(`http://localhost:3000/events/delete/${eventId}`);
+      await axios.delete(`http://localhost:3000/events/delete/${eventId}` , {
+          headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
 
       // Remove event from state after successful deletion
       const updatedEvents = events.filter(event => event.event_id !== eventId);

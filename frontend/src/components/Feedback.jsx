@@ -14,7 +14,7 @@ const Feedback = () => {
     performance: "",
     feedback_text: "",
   });
- 
+  const token = localStorage.getItem("token");
   // Fetch user_id from localStorage and get attendee_id
   useEffect(() => {
     const fetchAttendeeId = async () => {
@@ -24,7 +24,11 @@ const Feedback = () => {
        
         if (userId) {
           // Make API call to fetch attendee_id based on user_id
-          const response = await fetch(`http://localhost:3000/attendee/${userId}`);
+          const response = await fetch(`http://localhost:3000/attendee/${userId}` , {
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          });
           const data = await response.json();
  
           if (data.attendee_id) {
@@ -54,6 +58,7 @@ const Feedback = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization" : `Bearer ${token}`
         },
         body: JSON.stringify({
           feedback_id: feedback.feedback_id,

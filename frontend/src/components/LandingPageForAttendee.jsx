@@ -10,6 +10,7 @@ const LandingPageForAttendee = () => {
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
  
   // Fixed list of event categories
   const categories = [
@@ -17,18 +18,24 @@ const LandingPageForAttendee = () => {
     "Art Exhibition", "Food Festival", "Business Summit",
     "Theater & Drama", "Comedy Show", "Film Screening", "Charity Event"
   ];
- 
+  console.log("Auth Token:", token);
+
   // Fetch events based on the selected category
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         console.log(`Fetching events with category: ${selectedCategory}`);
-        const response = await axios.get("http://localhost:3000/events/", {
-          params: { category: selectedCategory } // Send the category in the query parameter
+        const response = await axios.get("http://localhost:3000/events", {
+          params: { category: selectedCategory }, // Send the category in the query parameter
+          headers: {
+              "Authorization" : `Bearer ${token}`
+          }
         });
+        
         setEvents(response.data);
         setFilteredEvents(response.data);
       } catch (err) {
+        // console.log("response : " , response);
         setError("Failed to fetch events.");
         console.error("Error fetching events:", err);
       } finally {

@@ -19,7 +19,11 @@ const EditEventModal = ({ event, onClose, onSave }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`http://localhost:3000/events/update/${eventDetails.event_id}`, eventDetails);
+            await axios.put(`http://localhost:3000/events/update/${eventDetails.event_id}`, eventDetails ,{
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                }
+            });
             onSave(eventDetails);
             onClose();
         } catch (error) {

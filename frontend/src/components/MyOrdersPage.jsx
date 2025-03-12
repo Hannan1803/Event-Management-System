@@ -16,8 +16,11 @@ const MyOrdersPage = () => {
         }
         
         const userId = JSON.parse(storedUser).id;
-        const response = await axios.get(`http://localhost:3000/attendee/${userId}`);
-        
+        const response = await axios.get(`http://localhost:3000/attendee/${userId}`, {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        })
         if (response.data && Array.isArray(response.data.data)) {
           setOrders(response.data.data);
           

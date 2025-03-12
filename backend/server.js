@@ -8,6 +8,7 @@ import bodyParser from 'body-parser';
 import { createClient } from '@supabase/supabase-js';
 import paymentRoutes from "./Routes/paymentRoutes.js";
 import attendeeRoutes from "./Routes/attendeeRoutes.js";
+import { authenticateToken } from "./Middleware/auth.js";
 dotenv.config();
 
 const app = express();
@@ -47,7 +48,7 @@ app.get("/api/attendees", async (req, res) => {
   }
 });
 
-app.post('/api/events', async (req, res) => {
+app.post('/api/events', authenticateToken , async (req, res) => {
   const eventDetails = req.body;
   const { data, error } = await supabase.from('event_details').insert([eventDetails]);
 
@@ -58,7 +59,7 @@ app.post('/api/events', async (req, res) => {
   }
 });
 
-app.get("/api/events", async (req, res) => {
+app.get("/api/events", authenticateToken , async (req, res) => {
   try {
     const { data, error } = await supabase
       .from("event_details")
@@ -79,7 +80,7 @@ app.get("/api/events", async (req, res) => {
 });
 
 // Update event
-app.put('/api/events/update/:eventId', async (req, res) => {
+app.put('/api/events/update/:eventId',authenticateToken , async (req, res) => {
   const { eventId } = req.params;
   const updatedData = req.body;
 
@@ -102,7 +103,7 @@ app.put('/api/events/update/:eventId', async (req, res) => {
 
 
 //Feedback_details
-app.post('/api/feedback', async (req, res) => {
+app.post('/api/feedback',authenticateToken , async (req, res) => {
   const { feedback_id, event_id, feedback_text, rating, performance } = req.body;
  
   // Insert into Supabase table 'feedback_details'
@@ -124,7 +125,7 @@ app.post('/api/feedback', async (req, res) => {
   }
 });
  
-app.get("/attendee/:user_id", async (req, res) => {
+app.get("/attendee/:user_id",authenticateToken , async (req, res) => {
   const { user_id } = req.params; // Extract user_id from the request parameters
  
   try {

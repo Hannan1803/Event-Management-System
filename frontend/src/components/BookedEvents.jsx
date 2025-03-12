@@ -5,12 +5,17 @@ import axios from "axios";
 const BookedEvents = () => {
   const [events, setEvents] = useState([]);
   const attendee_id = localStorage.getItem("attendee_id");
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchBookedEvents = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/attendees/booked/${attendee_id}`
+          `http://localhost:3000/api/attendees/booked/${attendee_id}` ,{
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          }
         );
         setEvents(response.data.data);
       } catch (error) {

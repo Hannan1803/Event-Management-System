@@ -111,7 +111,7 @@ export const loginUser = async (req, res) => {
     //   { expiresIn: process.env.JWT_EXPIRES_IN } // Expiration time for the token
     // );
     //console.log("token - ", token);
-    const token = jwt.sign(user, process.env.JWT_SECRET , {expiresIn: '15m'})
+    const token = jwt.sign(user, process.env.JWT_SECRET , {expiresIn: '50m'})
     console.log("token - ", token);
     
     const refreshtoken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);

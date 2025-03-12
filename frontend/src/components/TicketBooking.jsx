@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import axios from "axios";
 
 const TicketBooking = () => {
+  const token = localStorage.getItem('token');
   const aId = localStorage.getItem('user');
   const userId = JSON.parse(aId).id;
   const location = useLocation();
@@ -92,7 +93,8 @@ const TicketBooking = () => {
     }));
 
     try {
-      const response = await axios.post("http://localhost:3000/api/payments", {
+      const response = await axios.post("http://localhost:3000/api/payments", 
+        {
         event_id: event.event_id,
         user_id: userId,
         ticket_type: formattedTicketType,
@@ -100,6 +102,11 @@ const TicketBooking = () => {
         price: ticketPrice,
         total_price: calculatedTotalPrice,
         ticket_details: updatedTicketDetails,
+        },
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`, // Add Authorization header
+          }
       });
 
       if (response.status === 201) {
@@ -127,7 +134,12 @@ const TicketBooking = () => {
           ticketDetails: updatedTicketDetails,
           ticket_type: formattedTicketType,
           ticket_price: ticketPrice
-        });
+        },
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`, // Add Authorization header
+          }
+      });
       }
 
       console.log("All attendees registered successfully!");
